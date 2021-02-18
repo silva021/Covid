@@ -9,6 +9,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.silva021.covid.Main.MainActivity;
+
 public class SplashActivity extends AppCompatActivity {
     ImageView   imgSplash;
     Animation   rotation;

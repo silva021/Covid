@@ -68,7 +68,7 @@ public class LocationFilterActivity extends AppCompatActivity implements Locatio
     public void onLocationItemClick(@NonNull Location location) {
         Intent intent = new Intent();
         intent.putExtra(Location.KEY, location);
-        setResult(2, intent);
+        setResult(RESULT_OK, intent);
         finish();
     }
 }
