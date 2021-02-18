@@ -92,9 +92,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.toolbar_main_about:
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                break;
+            case R.id.toolbar_main_filter:
+                startActivity(new Intent(MainActivity.this, FilterActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);
