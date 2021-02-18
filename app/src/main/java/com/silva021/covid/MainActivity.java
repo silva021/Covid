@@ -1,22 +1,39 @@
 package com.silva021.covid;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
-import android.app.Instrumentation;
-import android.content.IntentFilter;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
-    ViewHolder mViewHolder = new ViewHolder();
+    @BindView(R.id.txtEstado)
+    TextView txtUF;
+    @BindView(R.id.txtNumeroCasos)
+    TextView txtNumberCasos;
+    @BindView(R.id.txtNumeroObitos)
+    TextView txtNumberObitos;
+    @BindView(R.id.linearDataCovid)
+    LinearLayout linearDataCovid;
+    @BindView(R.id.linearPermisisonDenied)
+    LinearLayout linearPermisisonDenied;
+    @BindView(R.id.btnLocation)
+    Button btnLocation;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,21 +45,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkPermission() {
         if (getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_LOCATION)) {
-            if (ContextCompat.checkSelfPermission(getApplicationContext(), LOCATION_SERVICE) == PackageManager.PERMISSION_GRANTED){
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), LOCATION_SERVICE) == PackageManager.PERMISSION_GRANTED) {
                 searchLocalization();
             } else {
                 uiPermissionDenied();
             }
         } else {
-            Toast.makeText(getApplicationContext(), "não Tem", Toast.LENGTH_LONG).show();;
+            Toast.makeText(getApplicationContext(), "não Tem", Toast.LENGTH_LONG).show();
+            ;
         }
     }
 
-    public void searchLocalization(){
+    public void searchLocalization() {
 
     }
 
-    public void requestPermission(){
+    public void requestPermission() {
 //        ActivityResultLauncher<String> requestPermisisonLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
 //            if (isGranted){
 //                Toast.makeText(getApplicationContext(), "aceito", Toast.LENGTH_LONG).show();
@@ -50,29 +68,36 @@ public class MainActivity extends AppCompatActivity {
 //                Toast.makeText(getApplicationContext(), "não aceitou", Toast.LENGTH_LONG).show();
 //            }
 //        });
-
     }
+
     private void initalizeComponents() {
-        mViewHolder.txtUF           = findViewById(R.id.txtEstado);
-        mViewHolder.txtNumberCasos  = findViewById(R.id.txtNumeroCasos);
-        mViewHolder.txtNumberObitos = findViewById(R.id.txtNumeroObitos);
+        ButterKnife.bind(this);
 
-        mViewHolder.linearDataCovid         = findViewById(R.id.linearDataCovid);
-        mViewHolder.linearPermisisonDenied  = findViewById(R.id.linearPermisisonDenied);
-        mViewHolder.btnLocation             = findViewById(R.id.btnLocation);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Inicio");
 
-        mViewHolder.btnLocation.setOnClickListener(click -> {
-            requestPermission();
-        });
-    }
-    private void uiPermissionDenied(){
-        mViewHolder.linearDataCovid.setVisibility(View.GONE);
-        mViewHolder.linearPermisisonDenied.setVisibility(View.VISIBLE);
+        btnLocation.setOnClickListener(click -> requestPermission());
     }
 
-    static class ViewHolder {
-        TextView txtUF, txtObitos, txtCasos, txtNumberCasos, txtNumberObitos;
-        LinearLayout linearPermisisonDenied, linearDataCovid;
-        Button btnLocation;
+    private void uiPermissionDenied() {
+        linearDataCovid.setVisibility(View.GONE);
+        linearPermisisonDenied.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.toolbar_main_about:
+                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
