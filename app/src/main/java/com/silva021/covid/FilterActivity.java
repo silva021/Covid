@@ -76,7 +76,8 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
         Intent intent = new Intent();
         intent.putExtra(Constant.KEY_DATE, dateParms);
         intent.putExtra(Constant.KEY_LOCATION, location);
-        setResult(RESULT_OK, intent);
+        this.setResult(RESULT_OK, intent);
+        this.finish();
     }
 
 

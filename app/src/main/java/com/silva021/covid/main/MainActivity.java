@@ -1,15 +1,17 @@
-package com.silva021.covid.Main;
+package com.silva021.covid.main;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,9 +20,13 @@ import android.widget.Toast;
 import com.silva021.covid.AboutActivity;
 import com.silva021.covid.FilterActivity;
 import com.silva021.covid.R;
+import com.silva021.covid.adapter.CovidDataAdapter;
 import com.silva021.covid.model.CovidData;
 import com.silva021.covid.model.Location;
 import com.silva021.covid.utils.Constant;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     Button btnLocation;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.recycler)
+    RecyclerView recycler;
+
     MainPresenter mainPresenter;
     MainContract.Presenter mMainpresenter;
 
@@ -48,8 +57,43 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initalizeComponents();
+        Log.d("ciclo", "OnCreate");
     }
-
+//
+//    @Override
+//    protected void onStart() {
+//        Log.d("ciclo", "onStart");
+//        super.onStart();
+//    }
+//    @Override
+//    protected void onResume() {
+//        Log.d("ciclo", "onResume");
+//        super.onStart();
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        Log.d("ciclo", "onPause");
+//        super.onPause();
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        Log.d("ciclo", "onStop");
+//        super.onStop();
+//    }
+//
+//    @Override
+//    protected void onRestart() {
+//        Log.d("ciclo", "onRestart");
+//        super.onRestart();
+//    }
+//
+//    @Override
+//    protected void onDestroy() {
+//        Log.d("ciclo", "onDestroy");
+//        super.onDestroy();
+//    }
 
     private void initalizeComponents() {
         ButterKnife.bind(this);
@@ -58,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         getSupportActionBar().setTitle("Inicio");
 
         mainPresenter = new MainPresenter(this);
-        mainPresenter.loadCovidStateUF("RJ");
+        mainPresenter.start();
     }
 
     @Override
@@ -69,22 +113,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Intent intent;
-        int requestCode = 0;
         switch (item.getItemId()) {
             case R.id.toolbar_main_about:
-                intent = new Intent(MainActivity.this, AboutActivity.class);
-                requestCode = 10;
+                startActivityForResult(new Intent(this, AboutActivity.class), 10);
                 break;
             case R.id.toolbar_main_filter:
-                intent = new Intent(MainActivity.this, FilterActivity.class);
-                requestCode = 18;
+                startActivityForResult(new Intent(this, FilterActivity.class), 18);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + item.getItemId());
         }
 
-        startActivityForResult(intent, requestCode);
         return super.onOptionsItemSelected(item);
     }
 
@@ -113,6 +152,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void notifyUserFailureGet(String message) {
 
+    }
+
+    @Override
+    public void initializeRecycler(ArrayList<CovidData> covidData) {
+        CovidDataAdapter covidDataAdapter = new CovidDataAdapter(getApplicationContext(), covidData);
+        recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recycler.setAdapter(covidDataAdapter);
+//        Toast.makeText(this, " " + covidData.size(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

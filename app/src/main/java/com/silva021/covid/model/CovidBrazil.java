@@ -4,18 +4,17 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class Covid {
+public class CovidBrazil {
     @SerializedName("data")
     @Expose
-    private ArrayList<CovidData> data = null;
+    private CovidData data = null;
 
-    public ArrayList<CovidData> getData() {
+    public CovidData getData() {
         return data;
     }
 
-    public void setData(ArrayList<CovidData> data) {
+    public void setData(CovidData data) {
         this.data = data;
     }
 

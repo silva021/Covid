@@ -1,7 +1,10 @@
 package com.silva021.covid.API;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitConfiguration {
     private String base_url;
@@ -21,7 +24,7 @@ public class RetrofitConfiguration {
     public Retrofit getInstance(){
         return new Retrofit.Builder()
                 .baseUrl(this.base_url)
-                .addConverterFactory(JacksonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
 }

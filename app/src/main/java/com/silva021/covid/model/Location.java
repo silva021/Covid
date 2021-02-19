@@ -1,21 +1,22 @@
 package com.silva021.covid.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-@JsonIgnoreProperties({"id", "regiao"})
-
 public class Location implements Serializable {
-    @JsonIgnore
     public static final String BASE_URL = "https://servicodados.ibge.gov.br/api/v1/localidades/";
-    @JsonIgnore
     public static final int REQUEST_CODE = 21;
-    @JsonIgnore
     public static final String KEY = "LOCATION_OBJECT";
 
-    private String sigla, nome;
+    @SerializedName("sigla")
+    @Expose
+    private String sigla;
+
+    @SerializedName("nome")
+    @Expose
+    private String nome;
 
     public String getSigla() {
         return sigla;
