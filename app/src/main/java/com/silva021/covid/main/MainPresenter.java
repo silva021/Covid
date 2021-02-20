@@ -8,6 +8,8 @@ import com.silva021.covid.model.Covid;
 import com.silva021.covid.model.CovidBrazil;
 import com.silva021.covid.model.CovidData;
 
+import java.util.Calendar;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -75,7 +77,13 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void start() {
+        Calendar c = Calendar.getInstance();
+        String year = String.valueOf(c.get(Calendar.YEAR));
+        String month = (c.get(Calendar.MONTH) < 10 ? "0" + (c.get(Calendar.MONTH) + 1) : String.valueOf((c.get(Calendar.MONTH) + 1)));
+        String day = c.get(Calendar.DAY_OF_MONTH) < 10 ? "0" + c.get(Calendar.DAY_OF_MONTH) : String.valueOf(c.get(Calendar.DAY_OF_MONTH));
+
+        day = "10";
         loadCovidDataBrazil();
-        loadCovidDataAllBrazilUF("20200317");
+        loadCovidDataAllBrazilUF(year + month + day);
     }
 }

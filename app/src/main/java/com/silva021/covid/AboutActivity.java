@@ -36,7 +36,18 @@ public class AboutActivity extends AppCompatActivity {
         btnGitHub.setOnClickListener(view -> openUrl("https://github.com/silva021"));
     }
 
-    private void openUrl(String url){
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void openUrl(String url) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(url));
         startActivity(intent);

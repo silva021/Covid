@@ -37,6 +37,9 @@ public class CovidDataAdapter extends RecyclerView.Adapter<ViewHolder> {
         CovidData covidData = mList.get(position);
 
         holder.txtState.setText(covidData.getState());
+        holder.txtDate.setText("(" +covidData.getDatetime().substring(0, 10) + ")");
+        holder.txtCases.setText("Casos: " + Math.round(covidData.getCases()));
+        holder.txtDeath.setText("Mortes: " + Math.round(covidData.getDeaths()));
     }
 
     @Override
@@ -48,6 +51,12 @@ public class CovidDataAdapter extends RecyclerView.Adapter<ViewHolder> {
 class ViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.txtState)
     TextView txtState;
+    @BindView(R.id.txtCases)
+    TextView txtCases;
+    @BindView(R.id.txtDeath)
+    TextView txtDeath;
+    @BindView(R.id.txtDate)
+    TextView txtDate;
 
     public ViewHolder(@NonNull View itemView) {
         super(itemView);

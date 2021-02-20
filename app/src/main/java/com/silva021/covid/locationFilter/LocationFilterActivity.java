@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -28,7 +29,9 @@ public class LocationFilterActivity extends AppCompatActivity implements Locatio
     Toolbar toolbar;
     @BindView(R.id.recycler)
     RecyclerView recycler;
+
     private LocationFilterContract.Presenter mPresenter;
+    private Location mLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,18 @@ public class LocationFilterActivity extends AppCompatActivity implements Locatio
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finishActivityForResult();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    @Override
     public void initalizeRecycler(List<Location> list) {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recycler.getContext(), DividerItemDecoration.VERTICAL);
         LocationFilterAdapter locationFilterAdapter = new LocationFilterAdapter(getApplicationContext(), list);
@@ -66,8 +81,13 @@ public class LocationFilterActivity extends AppCompatActivity implements Locatio
 
     @Override
     public void onLocationItemClick(@NonNull Location location) {
+        this.mLocation = location;
+        finishActivityForResult();
+    }
+
+    private void finishActivityForResult() {
         Intent intent = new Intent();
-        intent.putExtra(Location.KEY, location);
+        intent.putExtra(Location.KEY, mLocation);
         setResult(RESULT_OK, intent);
         finish();
     }

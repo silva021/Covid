@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +23,7 @@ import com.silva021.covid.FilterActivity;
 import com.silva021.covid.R;
 import com.silva021.covid.adapter.CovidDataAdapter;
 import com.silva021.covid.model.CovidData;
+import com.silva021.covid.model.Filter;
 import com.silva021.covid.model.Location;
 import com.silva021.covid.utils.Constant;
 
@@ -30,6 +32,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.silva021.covid.utils.Constant.REQUEST_CODE_ACTIVITY_FILTER;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
     @BindView(R.id.txtEstado)
@@ -51,49 +55,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     MainPresenter mainPresenter;
     MainContract.Presenter mMainpresenter;
+    Filter filter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initalizeComponents();
-        Log.d("ciclo", "OnCreate");
     }
-//
-//    @Override
-//    protected void onStart() {
-//        Log.d("ciclo", "onStart");
-//        super.onStart();
-//    }
-//    @Override
-//    protected void onResume() {
-//        Log.d("ciclo", "onResume");
-//        super.onStart();
-//    }
-//
-//    @Override
-//    protected void onPause() {
-//        Log.d("ciclo", "onPause");
-//        super.onPause();
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        Log.d("ciclo", "onStop");
-//        super.onStop();
-//    }
-//
-//    @Override
-//    protected void onRestart() {
-//        Log.d("ciclo", "onRestart");
-//        super.onRestart();
-//    }
-//
-//    @Override
-//    protected void onDestroy() {
-//        Log.d("ciclo", "onDestroy");
-//        super.onDestroy();
-//    }
 
     private void initalizeComponents() {
         ButterKnife.bind(this);
@@ -115,10 +84,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.toolbar_main_about:
-                startActivityForResult(new Intent(this, AboutActivity.class), 10);
+                startActivity(new Intent(this, AboutActivity.class));
                 break;
             case R.id.toolbar_main_filter:
-                startActivityForResult(new Intent(this, FilterActivity.class), 18);
+                startActivityForResult(new Intent(MainActivity.this, FilterActivity.class).putExtra(Constant.KEY_FILTER, filter), REQUEST_CODE_ACTIVITY_FILTER);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + item.getItemId());
@@ -129,18 +98,18 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        switch (requestCode) {
-            case 18:
-                loadCovidDataUF(data);
-                break;
+        if (requestCode == REQUEST_CODE_ACTIVITY_FILTER) {
+            loadCovidDataUF(data);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void loadCovidDataUF(Intent data) {
-        String date = data.getStringExtra(Constant.KEY_DATE);
-        Location location = (Location) data.getSerializableExtra(Constant.KEY_LOCATION);
-        mainPresenter.loadCovidStateUF(location.getSigla());
+        filter = (Filter) data.getSerializableExtra(Constant.KEY_FILTER);
+        if (filter != null) {
+            mainPresenter.loadCovidStateUF(filter.getLocation().getSigla());
+            mainPresenter.loadCovidDataAllBrazilUF(filter.getDate());
+        }
 
     }
 
@@ -156,10 +125,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void initializeRecycler(ArrayList<CovidData> covidData) {
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recycler.getContext(), DividerItemDecoration.VERTICAL);
         CovidDataAdapter covidDataAdapter = new CovidDataAdapter(getApplicationContext(), covidData);
         recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recycler.addItemDecoration(dividerItemDecoration);
         recycler.setAdapter(covidDataAdapter);
-//        Toast.makeText(this, " " + covidData.size(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -167,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         txtUF.setText(covidData.getState());
         txtNumberCasos.setText(String.valueOf(Math.round(covidData.getCases())));
         txtNumberObitos.setText(String.valueOf(Math.round(covidData.getDeaths())));
-//        Toast.makeText(this, "aaaaaa", Toast.LENGTH_SHORT).show();
 
     }
 }

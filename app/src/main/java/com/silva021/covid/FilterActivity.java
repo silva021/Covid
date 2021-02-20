@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 
 import com.silva021.covid.locationFilter.LocationFilterActivity;
+import com.silva021.covid.model.Filter;
 import com.silva021.covid.model.Location;
 import com.silva021.covid.utils.Constant;
 import com.silva021.covid.utils.DatePickerFragment;
@@ -33,8 +34,7 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
     @BindView(R.id.btnDate)
     Button btnDate;
 
-    Location location;
-    String dateParms;
+    Filter filter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,11 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        filter = (Filter) getIntent().getSerializableExtra(Constant.KEY_FILTER);
+        if (filter != null) {
+            btnLocation.setText(filter.getLocation().getNome());
+            btnDate.setText(returnDateFormat(filter.getDate()));
+        }
         btnLocation.setOnClickListener((view) -> startActivityForResult(new Intent(FilterActivity.this, LocationFilterActivity.class), Location.REQUEST_CODE));
 
         btnDate.setOnClickListener((view) -> {
@@ -56,6 +61,16 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
         });
     }
 
+    private String returnDateFormat(String date) {
+        // 4:50 da manhã, não irei usar o sdf não kkkkkkk
+        String year = date.substring(0, 4);
+        String month = date.substring(4, 6);
+        String day = date.substring(6, 8);
+
+        return day + "-" + month +"-" + year;
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_filter, menu);
@@ -63,21 +78,28 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishActivityForResult();
+    }
+
+    private void finishActivityForResult() {
+        Intent intent = new Intent();
+        intent.putExtra(Constant.KEY_FILTER, filter);
+        this.setResult(RESULT_OK, intent);
+        this.finish();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                returnMainActivityWithFilter();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+                finishActivityForResult();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
 
-    private void returnMainActivityWithFilter() {
-        Intent intent = new Intent();
-        intent.putExtra(Constant.KEY_DATE, dateParms);
-        intent.putExtra(Constant.KEY_LOCATION, location);
-        this.setResult(RESULT_OK, intent);
-        this.finish();
+        }
     }
 
 
@@ -85,8 +107,15 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
             case Location.REQUEST_CODE:
-                location = (Location) data.getSerializableExtra(Location.KEY);
-                btnLocation.setText(location.getNome());
+                Location location = (Location) data.getSerializableExtra(Location.KEY);
+
+                if (location != null) {
+                    if (filter == null)
+                        filter = new Filter();
+
+                    filter.setLocation(location);
+                    btnLocation.setText(location.getNome());
+                }
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -104,7 +133,8 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
         } catch (Exception e) {
             date = null;
         }
-        dateParms = "" + year + month + (dayOfMonth < 10? "0"+dayOfMonth: dayOfMonth);
+
+        filter.setDate("" + year + (month < 10 ? "0" + month : month) + (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth));
         btnDate.setText(date);
     }
 }

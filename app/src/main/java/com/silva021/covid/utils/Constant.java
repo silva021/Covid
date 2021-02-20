@@ -1,6 +1,6 @@
 package com.silva021.covid.utils;
 
 public interface Constant {
-    String KEY_DATE = "date";
-    String KEY_LOCATION = "location";
+    String KEY_FILTER = "filter";
+    int REQUEST_CODE_ACTIVITY_FILTER = 18;
 }
