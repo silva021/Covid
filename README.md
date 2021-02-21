@@ -1,6 +1,10 @@
 # Covid
 Aplicativo simples de monitoramento dos casos de COVID atráves de uma API pública e consumindo outra para obter os dados dos estados Brasil, fazendo uso da arquitetura MVP e das biblioteca Retrofit e ButterKnife.
 
+
+# Fonte de dados 
+Os dados sobre o COVID são totalmente tiradas da API publica https://covid19-brazil-api.now.sh/ e quanto aos dados da localização a API que fornece é a https://servicodados.ibge.gov.br/api/docs/localidades
+
 # Telas
 
 ## Principal
