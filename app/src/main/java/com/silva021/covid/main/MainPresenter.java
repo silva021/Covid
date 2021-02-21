@@ -16,13 +16,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class MainPresenter implements MainContract.Presenter {
-    MainContract.View mMainContract;
+    MainContract.View mMainView;
     CovidAPI covidAPI;
     Retrofit retrofit;
 
-    public MainPresenter(MainContract.View mMainContract) {
-        this.mMainContract = mMainContract;
-        mMainContract.setPresenter(this);
+    public MainPresenter(MainContract.View mMainView) {
+        this.mMainView = mMainView;
+        mMainView.setPresenter(this);
         retrofit = new RetrofitConfiguration(CovidData.BASE_URL).getInstance();
         covidAPI = retrofit.create(CovidAPI.class);
     }
@@ -34,7 +34,8 @@ public class MainPresenter implements MainContract.Presenter {
             public void onResponse(Call<CovidBrazil> call, Response<CovidBrazil> response) {
                 CovidData covidBrazil = response.body().getData();
                 covidBrazil.setState("Brasil");
-                mMainContract.updateCovidData(covidBrazil);
+                mMainView.updateViewCovidDataCountry(covidBrazil);
+                mMainView.showProgressLiveData(false);
             }
 
             @Override
@@ -50,7 +51,12 @@ public class MainPresenter implements MainContract.Presenter {
         covidAPI.getCovidDataDate(date).enqueue(new Callback<Covid>() {
             @Override
             public void onResponse(Call<Covid> call, Response<Covid> response) {
-                mMainContract.initializeRecycler(response.body().getData());
+                if (response.body().getData().isEmpty())
+                    mMainView.notifyUserCovidDataEmply("Não tem dados atualizado para data de hoje.");
+                else
+                    mMainView.initializeRecycler(response.body().getData());
+
+                mMainView.showProgressRecycler(false);
             }
 
             @Override
@@ -65,7 +71,8 @@ public class MainPresenter implements MainContract.Presenter {
         covidAPI.getCovidDataUF(uf).enqueue(new Callback<CovidData>() {
             @Override
             public void onResponse(Call<CovidData> call, Response<CovidData> response) {
-                mMainContract.updateCovidData(response.body());
+                mMainView.updateViewCovidDataUF(response.body());
+                mMainView.showProgressLiveData(false);
             }
 
             @Override

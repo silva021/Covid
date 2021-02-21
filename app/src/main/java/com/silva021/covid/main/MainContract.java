@@ -10,9 +10,12 @@ import java.util.List;
 public interface MainContract {
 
     interface View extends BaseView<Presenter> {
-        void notifyUserFailureGet(String message);
+        void notifyUserCovidDataEmply(String message);
         void initializeRecycler(ArrayList<CovidData> covidData);
-        void updateCovidData(CovidData covidData);
+        void updateViewCovidDataCountry(CovidData covidData);
+        void updateViewCovidDataUF(CovidData covidData);
+        void showProgressRecycler(boolean b);
+        void showProgressLiveData(boolean b);
     }
 
     interface Presenter extends BasePresenter {

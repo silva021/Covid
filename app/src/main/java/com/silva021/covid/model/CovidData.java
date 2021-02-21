@@ -6,9 +6,7 @@ import com.google.gson.annotations.SerializedName;
 public class CovidData {
     public static final String BASE_URL = "https://covid19-brazil-api.now.sh/api/report/v1/";
 
-    @SerializedName("uid")
-    @Expose
-    private int uid;
+
     @SerializedName("uf")
     @Expose
     private String uf;
@@ -30,41 +28,12 @@ public class CovidData {
     @SerializedName("datetime")
     @Expose
     private String datetime;
-
-
-    @SerializedName("broadcast")
+    @SerializedName("confirmed")
     @Expose
-    private boolean broadcast;
-
-    @SerializedName("comments")
+    private long confirmed;
+    @SerializedName("recovered")
     @Expose
-    private String comments;
-
-
-
-    public boolean isBroadcast() {
-        return broadcast;
-    }
-
-    public void setBroadcast(boolean broadcast) {
-        this.broadcast = broadcast;
-    }
-
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
-    public int getUid() {
-        return uid;
-    }
-
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
+    private long recovered;
 
     public String getUf() {
         return uf;
@@ -122,10 +91,41 @@ public class CovidData {
         this.datetime = datetime;
     }
 
+    public void setCases(float cases) {
+        this.cases = cases;
+    }
+
+    public void setDeaths(float deaths) {
+        this.deaths = deaths;
+    }
+
+    public void setSuspects(float suspects) {
+        this.suspects = suspects;
+    }
+
+    public void setRefuses(float refuses) {
+        this.refuses = refuses;
+    }
+
+    public long getConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(long confirmed) {
+        this.confirmed = confirmed;
+    }
+
+    public long getRecovered() {
+        return recovered;
+    }
+
+    public void setRecovered(long recovered) {
+        this.recovered = recovered;
+    }
+
     @Override
     public String toString() {
         return "CovidData{" +
-                "uid=" + uid +
                 ", uf='" + uf + '\'' +
                 ", state='" + state + '\'' +
                 ", cases=" + cases +
@@ -133,8 +133,8 @@ public class CovidData {
                 ", suspects=" + suspects +
                 ", refuses=" + refuses +
                 ", datetime='" + datetime + '\'' +
-                ", broadcast=" + broadcast +
-                ", comments='" + comments + '\'' +
+                ", confirmed=" + confirmed +
+                ", recovered=" + recovered +
                 '}';
     }
 }

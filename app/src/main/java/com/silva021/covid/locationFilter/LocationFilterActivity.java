@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -29,6 +31,8 @@ public class LocationFilterActivity extends AppCompatActivity implements Locatio
     Toolbar toolbar;
     @BindView(R.id.recycler)
     RecyclerView recycler;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     private LocationFilterContract.Presenter mPresenter;
     private Location mLocation;
@@ -66,12 +70,16 @@ public class LocationFilterActivity extends AppCompatActivity implements Locatio
 
     @Override
     public void initalizeRecycler(List<Location> list) {
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recycler.getContext(), DividerItemDecoration.VERTICAL);
         LocationFilterAdapter locationFilterAdapter = new LocationFilterAdapter(getApplicationContext(), list);
         locationFilterAdapter.setOnItemClickListener(this);
         recycler.setLayoutManager(new LinearLayoutManager(recycler.getContext(), RecyclerView.VERTICAL, false));
-        recycler.addItemDecoration(dividerItemDecoration);
         recycler.setAdapter(locationFilterAdapter);
+    }
+
+    @Override
+    public void showProgress(boolean b) {
+        progressBar.setVisibility(b ? View.VISIBLE: View.GONE);
+        recycler.setVisibility(b ? View.GONE: View.VISIBLE);
     }
 
     @Override

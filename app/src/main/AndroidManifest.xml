@@ -14,35 +14,20 @@
         android:theme="@style/Theme.Covid">
         <activity
             android:name=".locationFilter.LocationFilterActivity"
-            android:parentActivityName=".FilterActivity">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
-        </activity>
+            android:parentActivityName=".FilterActivity" />
         <activity
             android:name=".FilterActivity"
-            android:parentActivityName=".main.MainActivity">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
+            android:parentActivityName=".main.MainActivity" />
         <activity
             android:name=".AboutActivity"
             android:parentActivityName=".main.MainActivity" />
         <activity android:name=".SplashActivity">
-<!--             <intent-filter>-->
-<!--             <action android:name="android.intent.action.MAIN" />-->
-<!--             <category android:name="android.intent.category.LAUNCHER" />-->
-<!--             </intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".main.MainActivity">
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
-             <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
-        </activity>
+        <activity android:name=".main.MainActivity" />
     </application>
 
 </manifest>

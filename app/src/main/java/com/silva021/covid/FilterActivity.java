@@ -49,8 +49,11 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
 
         filter = (Filter) getIntent().getSerializableExtra(Constant.KEY_FILTER);
         if (filter != null) {
-            btnLocation.setText(filter.getLocation().getNome());
-            btnDate.setText(returnDateFormat(filter.getDate()));
+            if (filter.getLocation() != null)
+                btnLocation.setText(filter.getLocation().getNome());
+
+            if (filter.getDate() != null)
+                btnDate.setText(returnDateFormat(filter.getDate()));
         }
         btnLocation.setOnClickListener((view) -> startActivityForResult(new Intent(FilterActivity.this, LocationFilterActivity.class), Location.REQUEST_CODE));
 
@@ -67,7 +70,7 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
         String month = date.substring(4, 6);
         String day = date.substring(6, 8);
 
-        return day + "-" + month +"-" + year;
+        return day + "-" + month + "-" + year;
 
     }
 
@@ -133,6 +136,9 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
         } catch (Exception e) {
             date = null;
         }
+
+        if (filter == null)
+            filter = new Filter();
 
         filter.setDate("" + year + (month < 10 ? "0" + month : month) + (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth));
         btnDate.setText(date);

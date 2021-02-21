@@ -10,6 +10,7 @@ public interface LocationFilterContract {
     interface View extends BaseView<Presenter> {
         void notifyUserFailureGet(String message);
         void initalizeRecycler(List<Location> list);
+        void showProgress(boolean b);
     }
 
     interface Presenter extends BasePresenter {

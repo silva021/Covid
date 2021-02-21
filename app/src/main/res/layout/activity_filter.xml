@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_background"
     tools:context=".FilterActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -12,7 +13,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -22,7 +24,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/color_background_card">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -31,7 +34,7 @@
                 android:layout_marginLeft="10sp"
                 android:gravity="center_vertical"
                 android:text="Localidade"
-                android:textColor="#635D5D" />
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btnLocation"
@@ -43,10 +46,10 @@
                 android:backgroundTint="@android:color/transparent"
                 android:gravity="center_vertical"
                 android:text="A definir"
-                android:textColor="#635D5D"
+                android:textColor="@color/white"
                 app:icon="@drawable/ic_arrow_right"
                 app:iconGravity="end"
-                app:iconTint="#232323" />
+                app:iconTint="@color/white" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
@@ -57,7 +60,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/color_background_card">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -66,7 +70,7 @@
                 android:layout_marginLeft="10sp"
                 android:gravity="center_vertical"
                 android:text="Data"
-                android:textColor="#635D5D" />
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btnDate"
@@ -78,10 +82,10 @@
                 android:backgroundTint="@android:color/transparent"
                 android:gravity="center_vertical"
                 android:text="A definir"
-                android:textColor="#635D5D"
+                android:textColor="@color/white"
                 app:icon="@drawable/ic_arrow_right"
                 app:iconGravity="end"
-                app:iconTint="#232323" />
+                app:iconTint="@color/white" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 

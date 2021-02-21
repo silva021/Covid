@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import com.silva021.covid.main.MainActivity;
 
 public class SplashActivity extends AppCompatActivity {
-    ImageView   imgSplash;
-    Animation   rotation;
+    ImageView imgSplash;
+    Animation rotation;
 
 
     @Override

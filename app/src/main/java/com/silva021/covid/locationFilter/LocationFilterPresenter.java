@@ -14,11 +14,11 @@ import retrofit2.Retrofit;
 import static com.silva021.covid.model.Location.BASE_URL;
 
 public class LocationFilterPresenter implements LocationFilterContract.Presenter {
-    LocationFilterContract.View mLocationFilterContract;
+    LocationFilterContract.View mLocationFilterView;
 
-    public LocationFilterPresenter(LocationFilterContract.View mLocationFilterContract) {
-        this.mLocationFilterContract = mLocationFilterContract;
-        mLocationFilterContract.setPresenter(this);
+    public LocationFilterPresenter(LocationFilterContract.View mLocationFilterView) {
+        this.mLocationFilterView = mLocationFilterView;
+        mLocationFilterView.setPresenter(this);
     }
 
     @Override
@@ -37,12 +37,13 @@ public class LocationFilterPresenter implements LocationFilterContract.Presenter
         allUF.enqueue(new Callback<List<Location>>() {
             @Override
             public void onResponse(Call<List<Location>> call, Response<List<Location>> response) {
-                mLocationFilterContract.initalizeRecycler(response.body());
+                mLocationFilterView.initalizeRecycler(response.body());
+                mLocationFilterView.showProgress(false);
             }
 
             @Override
             public void onFailure(Call<List<Location>> call, Throwable t) {
-                mLocationFilterContract.notifyUserFailureGet("Ocorreu um erro ao retornar lista de Estados");
+                mLocationFilterView.notifyUserFailureGet("Ocorreu um erro ao retornar lista de Estados");
             }
         });
     }

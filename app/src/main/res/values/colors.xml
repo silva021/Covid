@@ -9,4 +9,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#E1E1E1</color>
     <color name="color_gray">#707070</color>
+    <color name="color_background_card">#041427</color>
+    <color name="light_grey">#949BAA</color>
+    <color name="color_background">#2D374C</color>
+    <color name="color_yellow">#FFD900</color>
+    <color name="color_green">#22A981</color>
+    <color name="color_red">#F02A2A</color>
 </resources>
